@@ -1,6 +1,6 @@
 {
   "name": "intl-list-format",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A fully spec-compliant polyfill for 'Intl.ListFormat'",
   "repository": {
     "type": "git",
