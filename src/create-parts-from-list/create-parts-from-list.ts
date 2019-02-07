@@ -1,8 +1,12 @@
-import {ListFormat} from "../list-format/list-format";
-import {ElementPartition, ListPartition, ListPartitions} from "../list-partition/list-partition";
-import {getInternalSlot} from "../internal-slot/internal-slot";
-import {deconstructPattern} from "../deconstruct-pattern/deconstruct-pattern";
-import {Placeables} from "../placeables/placeables";
+import { ListFormat } from "../list-format/list-format";
+import {
+  ElementPartition,
+  ListPartition,
+  ListPartitions
+} from "../list-partition/list-partition";
+import { getInternalSlot } from "../internal-slot/internal-slot";
+import { deconstructPattern } from "../deconstruct-pattern/deconstruct-pattern";
+import { Placeables } from "../placeables/placeables";
 
 /**
  * The CreatePartsFromList abstract operation is called with arguments listFormat
@@ -14,108 +18,105 @@ import {Placeables} from "../placeables/placeables";
  * @param {string[]} list
  * @return {ListPartitions}
  */
-export function createPartsFromList (listFormat: ListFormat, list: string[]): ListPartitions {
-	let pattern: string;
+export function createPartsFromList(
+  listFormat: ListFormat,
+  list: string[]
+): ListPartitions {
+  let pattern: string;
 
-	// Let size be the number of elements of list.
-	const size = list.length;
+  // Let size be the number of elements of list.
+  const size = list.length;
 
-	// If size is 0, then
-	if (size === 0) {
+  // If size is 0, then
+  if (size === 0) {
+    // Return a new empty List.
+    return [];
+  }
 
-		// Return a new empty List.
-		return [];
-	}
+  // If size is 2, then
+  if (size === 2) {
+    // Let pattern be listFormat.[[TemplatePair]].
+    pattern = getInternalSlot(listFormat, "templatePair");
 
-	// If size is 2, then
-	if (size === 2) {
+    // Let first be a new Record { [[Type]]: "element", [[Value]]: list[0] }.
+    const first: ElementPartition = {
+      type: "element",
+      value: list[0]
+    };
 
-		// Let pattern be listFormat.[[TemplatePair]].
-		pattern = getInternalSlot(listFormat, "templatePair");
+    // Let second be a new Record { [[Type]]: "element", [[Value]]: list[1] }.
+    const second: ElementPartition = {
+      type: "element",
+      value: list[1]
+    };
 
-		// Let first be a new Record { [[Type]]: "element", [[Value]]: list[0] }.
-		const first: ElementPartition = {
-			type: "element",
-			value: list[0]
-		};
+    // Let placeables be a new Record { [[0]]: first, [[1]]: second }.
+    const placeables: Placeables = {
+      0: first,
+      1: second
+    };
 
-		// Let second be a new Record { [[Type]]: "element", [[Value]]: list[1] }.
-		const second: ElementPartition = {
-			type: "element",
-			value: list[1]
-		};
+    // Return DeconstructPattern(pattern, placeables).
+    return deconstructPattern(pattern, placeables);
+  }
 
-		// Let placeables be a new Record { [[0]]: first, [[1]]: second }.
-		const placeables: Placeables = {
-			0: first,
-			1: second
-		};
+  // Let last be a new Record { [[Type]]: "element", [[Value]]: list[size - 1] }.
+  const last: ElementPartition = {
+    type: "element",
+    value: list[size - 1]
+  };
 
-		// Return DeconstructPattern(pattern, placeables).
-		return deconstructPattern(pattern, placeables);
-	}
+  // Let parts be « last ».
+  let parts: ListPartition[] = [last];
 
-	// Let last be a new Record { [[Type]]: "element", [[Value]]: list[size - 1] }.
-	const last: ElementPartition = {
-		type: "element",
-		value: list[size - 1]
-	};
+  // Let i be size - 2.
+  let i = size - 2;
 
-	// Let parts be « last ».
-	let parts: ListPartition[] = [last];
+  // Repeat, while i ≥ 0
+  while (i >= 0) {
+    // If i is 0, then
+    if (i === 0) {
+      // Let pattern be listFormat.[[TemplateStart]].
+      pattern = getInternalSlot(listFormat, "templateStart");
+    }
 
-	// Let i be size - 2.
-	let i = size - 2;
+    // Else, if i is less than size - 2, then
+    else if (i < size - 2) {
+      // Let pattern be listFormat.[[TemplateMiddle]].
+      pattern = getInternalSlot(listFormat, "templateMiddle");
+    }
 
-	// Repeat, while i ≥ 0
-	while (i >= 0) {
+    // Else,
+    else {
+      // Let pattern be listFormat.[[TemplateEnd]].
+      pattern = getInternalSlot(listFormat, "templateEnd");
+    }
 
-		// If i is 0, then
-		if (i === 0) {
+    // Let head be a new Record { [[Type]]: "element", [[Value]]: list[i] }.
+    const head: ElementPartition = {
+      type: "element",
+      value: list[i]
+    };
 
-			// Let pattern be listFormat.[[TemplateStart]].
-			pattern = getInternalSlot(listFormat, "templateStart");
-		}
+    // Let tail be a new Record { [[Type]]: "element", [[Value]]: parts }.
+    const tail: ElementPartition = {
+      type: "element",
+      value: parts
+    };
 
-		// Else, if i is less than size - 2, then
-		else if (i < (size - 2)) {
+    // Let placeables be a new Record { [[0]]: head, [[1]]: tail }.
+    const placeables: Placeables = {
+      0: head,
+      1: tail
+    };
 
-			// Let pattern be listFormat.[[TemplateMiddle]].
-			pattern = getInternalSlot(listFormat, "templateMiddle");
-		}
+    // Set parts to DeconstructPattern(pattern, placeables).
+    parts = deconstructPattern(pattern, placeables);
 
-		// Else,
-		else {
+    // Decrement i by 1.
+    i--;
+  }
 
-			// Let pattern be listFormat.[[TemplateEnd]].
-			pattern = getInternalSlot(listFormat, "templateEnd");
-		}
-
-		// Let head be a new Record { [[Type]]: "element", [[Value]]: list[i] }.
-		const head: ElementPartition = {
-			type: "element",
-			value: list[i]
-		};
-
-		// Let tail be a new Record { [[Type]]: "element", [[Value]]: parts }.
-		const tail: ElementPartition = {
-			type: "element",
-			value: parts
-		};
-
-		// Let placeables be a new Record { [[0]]: head, [[1]]: tail }.
-		const placeables: Placeables = {
-			0: head,
-			1: tail
-		};
-
-		// Set parts to DeconstructPattern(pattern, placeables).
-		parts = deconstructPattern(pattern, placeables);
-
-		// Decrement i by 1.
-		i--;
-	}
-
-	// Return parts.
-	return parts;
+  // Return parts.
+  return parts;
 }

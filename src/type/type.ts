@@ -1,1 +1,1 @@
-export type Type = "conjunction"|"disjunction"|"unit";
+export type Type = "conjunction" | "disjunction" | "unit";

@@ -1,6 +1,6 @@
-import {ListFormat} from "../list-format/list-format";
-import {ListPartitions} from "../list-partition/list-partition";
-import {createPartsFromList} from "../create-parts-from-list/create-parts-from-list";
+import { ListFormat } from "../list-format/list-format";
+import { ListPartitions } from "../list-partition/list-partition";
+import { createPartsFromList } from "../create-parts-from-list/create-parts-from-list";
 
 /**
  * The FormatListToParts abstract operation is called with arguments listFormat
@@ -11,6 +11,9 @@ import {createPartsFromList} from "../create-parts-from-list/create-parts-from-l
  * @param {string[]} list
  * @returns {ListPartitions}
  */
-export function formatListToParts (listFormat: ListFormat, list: string[]): ListPartitions {
-	return createPartsFromList(listFormat, list);
+export function formatListToParts(
+  listFormat: ListFormat,
+  list: string[]
+): ListPartitions {
+  return createPartsFromList(listFormat, list);
 }

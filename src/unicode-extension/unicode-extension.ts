@@ -9,6 +9,6 @@ export const UNICODE_EXTENSION_SEQUENCE_REGEXP = /-u(?:-[0-9a-z]{2,8})+/gi;
  * @param {string} str
  * @returns{string}
  */
-export function removeUnicodeExtensionSequences (str: string): string {
-	return str.replace(UNICODE_EXTENSION_SEQUENCE_REGEXP, "");
+export function removeUnicodeExtensionSequences(str: string): string {
+  return str.replace(UNICODE_EXTENSION_SEQUENCE_REGEXP, "");
 }

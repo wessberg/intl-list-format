@@ -1,5 +1,5 @@
-import {ListFormat} from "../list-format/list-format";
-import {createPartsFromList} from "../create-parts-from-list/create-parts-from-list";
+import { ListFormat } from "../list-format/list-format";
+import { createPartsFromList } from "../create-parts-from-list/create-parts-from-list";
 
 /**
  * The FormatList abstract operation is called with arguments listFormat
@@ -10,19 +10,18 @@ import {createPartsFromList} from "../create-parts-from-list/create-parts-from-l
  * @param {string[]} list
  * @returns {string}
  */
-export function formatList (listFormat: ListFormat, list: string[]): string {
-	// Let parts be CreatePartsFromList(listFormat, list).
-	const parts = createPartsFromList(listFormat, list);
+export function formatList(listFormat: ListFormat, list: string[]): string {
+  // Let parts be CreatePartsFromList(listFormat, list).
+  const parts = createPartsFromList(listFormat, list);
 
-	// Let result be an empty String.
-	let result = "";
+  // Let result be an empty String.
+  let result = "";
 
-	// For each part in parts, do
-	for (const part of parts) {
+  // For each part in parts, do
+  for (const part of parts) {
+    // Set result to a String value produced by concatenating result and part.[[Value]].
+    result += part.value;
+  }
 
-		// Set result to a String value produced by concatenating result and part.[[Value]].
-		result += part.value;
-	}
-
-	return result;
+  return result;
 }

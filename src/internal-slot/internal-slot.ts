@@ -1,35 +1,38 @@
-import {ListFormatInstanceInternals} from "./list-format-instance-internals";
-import {ListFormatStaticInternals} from "./list-format-static-internals";
-import {ListFormat} from "../list-format/list-format";
+import { ListFormatInstanceInternals } from "./list-format-instance-internals";
+import { ListFormatStaticInternals } from "./list-format-static-internals";
+import { ListFormat } from "../list-format/list-format";
 
 /**
  * A WeakMap between ListFormat instances and their internal slot members
  * @type {WeakMap<ListFormat, ListFormatInstanceInternals>}
  */
-export const LIST_FORMAT_INSTANCE_INTERNAL_MAP: WeakMap<ListFormat, ListFormatInstanceInternals> = new WeakMap();
+export const LIST_FORMAT_INSTANCE_INTERNAL_MAP: WeakMap<
+  ListFormat,
+  ListFormatInstanceInternals
+> = new WeakMap();
 
 /**
  * Contains the internal static for ListFormat
  * @type {ListFormatStaticInternals}
  */
 export const LIST_FORMAT_STATIC_INTERNALS: ListFormatStaticInternals = {
-	/**
-	 * The value of the [[RelevantExtensionKeys]] internal slot is « ».
-	 * http://tc39.github.io/proposal-intl-list-format/#sec-Intl.ListFormat-internal-slots
-	 */
-	relevantExtensionKeys: [],
+  /**
+   * The value of the [[RelevantExtensionKeys]] internal slot is « ».
+   * http://tc39.github.io/proposal-intl-list-format/#sec-Intl.ListFormat-internal-slots
+   */
+  relevantExtensionKeys: [],
 
-	/**
-	 * The value of the [[LocaleData]] internal slot is implementation defined within the constraints described in 9.1
-	 * http://tc39.github.io/proposal-intl-list-format/#sec-Intl.ListFormat-internal-slots
-	 */
-	localeData: {},
+  /**
+   * The value of the [[LocaleData]] internal slot is implementation defined within the constraints described in 9.1
+   * http://tc39.github.io/proposal-intl-list-format/#sec-Intl.ListFormat-internal-slots
+   */
+  localeData: {},
 
-	/**
-	 * The value of the [[AvailableLocales]] internal slot is implementation defined within the constraints described in 9.1.
-	 * http://tc39.github.io/proposal-intl-list-format/#sec-Intl.ListFormat-internal-slots
-	 */
-	availableLocales: []
+  /**
+   * The value of the [[AvailableLocales]] internal slot is implementation defined within the constraints described in 9.1.
+   * http://tc39.github.io/proposal-intl-list-format/#sec-Intl.ListFormat-internal-slots
+   */
+  availableLocales: []
 };
 
 /**
@@ -38,15 +41,19 @@ export const LIST_FORMAT_STATIC_INTERNALS: ListFormatStaticInternals = {
  * @param {T} property
  * @param {ListFormatInstanceInternals[T]} value
  */
-export function setInternalSlot<T extends keyof ListFormatInstanceInternals> (instance: ListFormat, property: T, value: ListFormatInstanceInternals[T]): void {
-	let record = LIST_FORMAT_INSTANCE_INTERNAL_MAP.get(instance);
-	if (record == null) {
-		record = {} as ListFormatInstanceInternals;
-		LIST_FORMAT_INSTANCE_INTERNAL_MAP.set(instance, record);
-	}
+export function setInternalSlot<T extends keyof ListFormatInstanceInternals>(
+  instance: ListFormat,
+  property: T,
+  value: ListFormatInstanceInternals[T]
+): void {
+  let record = LIST_FORMAT_INSTANCE_INTERNAL_MAP.get(instance);
+  if (record == null) {
+    record = {} as ListFormatInstanceInternals;
+    LIST_FORMAT_INSTANCE_INTERNAL_MAP.set(instance, record);
+  }
 
-	// Update the property with the given value
-	record[property] = value;
+  // Update the property with the given value
+  record[property] = value;
 }
 
 /**
@@ -55,13 +62,18 @@ export function setInternalSlot<T extends keyof ListFormatInstanceInternals> (in
  * @param {T} property
  * @returns{ListFormatInstanceInternals[T]}
  */
-export function getInternalSlot<T extends keyof ListFormatInstanceInternals> (instance: ListFormat, property: T): ListFormatInstanceInternals[T] {
-	const record = LIST_FORMAT_INSTANCE_INTERNAL_MAP.get(instance);
-	if (record == null) {
-		throw new ReferenceError(`No internal slots has been allocated for the given instance of ListFormat`);
-	}
+export function getInternalSlot<T extends keyof ListFormatInstanceInternals>(
+  instance: ListFormat,
+  property: T
+): ListFormatInstanceInternals[T] {
+  const record = LIST_FORMAT_INSTANCE_INTERNAL_MAP.get(instance);
+  if (record == null) {
+    throw new ReferenceError(
+      `No internal slots has been allocated for the given instance of ListFormat`
+    );
+  }
 
-	return record[property];
+  return record[property];
 }
 
 /**
@@ -70,7 +82,10 @@ export function getInternalSlot<T extends keyof ListFormatInstanceInternals> (in
  * @param {T} property
  * @returns{ListFormatInstanceInternals[T]}
  */
-export function hasInternalSlot<T extends keyof ListFormatInstanceInternals> (instance: ListFormat, property: T): boolean {
-	const record = LIST_FORMAT_INSTANCE_INTERNAL_MAP.get(instance);
-	return record != null && property in record;
+export function hasInternalSlot<T extends keyof ListFormatInstanceInternals>(
+  instance: ListFormat,
+  property: T
+): boolean {
+  const record = LIST_FORMAT_INSTANCE_INTERNAL_MAP.get(instance);
+  return record != null && property in record;
 }
