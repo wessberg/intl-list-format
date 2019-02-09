@@ -73,7 +73,7 @@ Some highlights of this polyfill include:
 - [Maintainers](#maintainers)
 - [Backers](#backers)
   - [Patreon](#patreon)
-  - [FAQ](#faq)
+- [FAQ](#faq)
   - [What is the default locale?](#what-is-the-default-locale)
   - [Are there any known quirks?](#are-there-any-known-quirks)
 - [License](#license)
@@ -116,10 +116,10 @@ One way to do so is with an async import:
 
 ```typescript
 if (!("ListFormat" in Intl)) {
-  await import("intl-list-format");
+	await import("intl-list-format");
 
-  // or with commonjs:
-  require("intl-list-format");
+	// or with commonjs:
+	require("intl-list-format");
 }
 ```
 
@@ -166,9 +166,9 @@ The following examples are taken [directly from the original proposal](https://g
 // Create a list formatter in your locale
 // with default values explicitly passed in.
 const lf = new Intl.ListFormat("en", {
-  localeMatcher: "best fit", // other values: "lookup"
-  type: "conjunction", // "conjunction", "disjunction" or "unit"
-  style: "long" // other values: "short" or "narrow"
+	localeMatcher: "best fit", // other values: "lookup"
+	type: "conjunction", // "conjunction", "disjunction" or "unit"
+	style: "long" // other values: "short" or "narrow"
 });
 
 lf.format(["Motorcycle", "Truck", "Car"]);
@@ -192,7 +192,7 @@ lf.formatToParts(["Foo", "Bar", "Baz"]);
 ### Intl.ListFormat.prototype.resolvedOptions
 
 ```typescript
-const lf = new Intl.ListFormat("en", { type: "unit", style: "narrow" });
+const lf = new Intl.ListFormat("en", {type: "unit", style: "narrow"});
 
 lf.resolvedOptions();
 // > {locale: "en", style: "narrow", type: "unit"}
@@ -251,7 +251,7 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 <!-- SHADOW_SECTION_FAQ_START -->
 
-### FAQ
+## FAQ
 
 <!-- SHADOW_SECTION_FAQ_END -->
 
