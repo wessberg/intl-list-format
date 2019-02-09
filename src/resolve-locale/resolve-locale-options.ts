@@ -1,5 +1,5 @@
-import { LocaleMatcher } from "../locale-matcher/locale-matcher";
+import {LocaleMatcher} from "../locale-matcher/locale-matcher";
 
 export interface ResolveLocaleOptions {
-  localeMatcher: LocaleMatcher;
+	localeMatcher: LocaleMatcher;
 }

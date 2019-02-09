@@ -7,19 +7,19 @@
  * @return {string[]}
  */
 export function stringListFromIterable(iterable?: Iterable<string>): string[] {
-  // If iterable is undefined, then
-  if (iterable === undefined) {
-    // Return a new empty List.
-    return [];
-  }
+	// If iterable is undefined, then
+	if (iterable === undefined) {
+		// Return a new empty List.
+		return [];
+	}
 
-  // Spread into an array
-  const arr = [...iterable];
+	// Spread into an array
+	const arr = [...iterable];
 
-  // If any of the elements isn't a string, throw a TypeError
-  if (arr.some(element => typeof element !== "string")) {
-    throw new TypeError(`All List items must be strings`);
-  }
+	// If any of the elements isn't a string, throw a TypeError
+	if (arr.some(element => typeof element !== "string")) {
+		throw new TypeError(`All List items must be strings`);
+	}
 
-  return arr;
+	return arr;
 }

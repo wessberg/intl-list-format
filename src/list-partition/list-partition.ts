@@ -1,14 +1,14 @@
 export interface ElementPartition {
-  type: "element";
-  value: ListPartition[] | string;
+	type: "element";
+	value: ListPartition[] | string;
 }
 
 export interface ListPartitionBase {
-  value: string;
+	value: string;
 }
 
 export interface LiteralPartition extends ListPartitionBase {
-  type: "literal";
+	type: "literal";
 }
 
 export type ListPartition = ElementPartition | LiteralPartition;
