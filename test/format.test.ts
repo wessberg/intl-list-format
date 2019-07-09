@@ -1,6 +1,8 @@
+/// <reference types="../src/typings" />
+
 import test from "ava";
-import "../src/patch/auto-patch";
-import "../../locale-data/en";
+import "../src/test262";
+import "../locale-data/en";
 
 // tslint:disable
 
@@ -74,4 +76,10 @@ test("Correctly formats unit lists. #4", t => {
 	const lf = new Intl.ListFormat("en", {type: "unit"});
 	const result = lf.format([]);
 	t.deepEqual(result, "");
+});
+
+test("Correctly formats style='short' lists. #1", t => {
+	const lf = new Intl.ListFormat("en", {style: "short"});
+	const result = lf.format(["foo", "bar"]);
+	t.deepEqual(result, "foo & bar");
 });

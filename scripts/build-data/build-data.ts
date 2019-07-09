@@ -5,7 +5,7 @@ import {dirname, join} from "path";
 import {existsSync, mkdirSync} from "fs";
 import {createProgramFromSources, SourceFileInput} from "./ts/create-program-from-sources";
 import {LocaleDataEntry, LocaleDataEntryValueValueValue} from "../../src/locale/locale-data";
-import stringify from "javascript-stringify";
+import {stringify} from "javascript-stringify";
 
 // The directory on disk to write locale files to
 const OUTPUT_DIRECTORY = join(dirname(sync("package.json")!), "locale-data");
@@ -22,7 +22,7 @@ const sources: SourceFileInput[] = [];
  * @param {object} value
  * @returns{LocaleDataEntryValueValueValue}
  */
-function formatLocaleDataEntryValueValueValue (value: { "2": string; start: string; middle: string; end: string }): LocaleDataEntryValueValueValue {
+function formatLocaleDataEntryValueValueValue(value: {"2": string; start: string; middle: string; end: string}): LocaleDataEntryValueValueValue {
 	return {
 		Pair: value["2"],
 		Start: value.start,
@@ -43,9 +43,9 @@ for (const localeId of localeIds) {
 	const localeDataEntry: LocaleDataEntry = {
 		formats: {
 			conjunction: {
-				long: formatLocaleDataEntryValueValueValue(patterns.default),
-				short: formatLocaleDataEntryValueValueValue(patterns.default),
-				narrow: formatLocaleDataEntryValueValueValue(patterns.default)
+				long: formatLocaleDataEntryValueValueValue(patterns.standard || patterns.standardLong || patterns.default),
+				short: formatLocaleDataEntryValueValueValue(patterns.standardShort || patterns.standardNarrow || patterns.standard || patterns.default),
+				narrow: formatLocaleDataEntryValueValueValue(patterns.standardNarrow || patterns.standardShort || patterns.standard || patterns.default)
 			},
 			disjunction: {
 				long: formatLocaleDataEntryValueValueValue(patterns.or),

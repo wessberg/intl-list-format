@@ -13,6 +13,10 @@ import {resolveLocale} from "../resolve-locale/resolve-locale";
 import {stringListFromIterable} from "../string-list-from-iterable";
 import {formatList} from "../format-list/format-list";
 import {formatListToParts} from "../format-list-to-parts/format-list-to-parts";
+import {getOption} from "../util/get-option";
+import {TYPE} from "../type/type";
+import {STYLE} from "../style/style";
+import {LOCALE_MATCHER} from "../locale-matcher/locale-matcher";
 
 /**
  * The ListFormat constructor is the %ListFormat% intrinsic object and a standard built-in property of the Intl object.
@@ -21,13 +25,11 @@ import {formatListToParts} from "../format-list-to-parts/format-list-to-parts";
  * http://tc39.github.io/proposal-intl-list-format/#sec-intl-listformat-constructor
  */
 export class ListFormat {
-	/**
-	 * The initial value of the @@toStringTag property is the string value "Intl.ListFormat".
-	 * @type {string}
-	 */
-	public [Symbol.toStringTag] = "Intl.ListFormat";
+	// The spec states that the constructor must have a length of 0 and therefore be parameter-less
+	constructor() {
+		const locales = arguments[0] as Locale | Locales | undefined;
+		let options = arguments[1] as Partial<ListFormatOptions>;
 
-	constructor(locales?: Locale | Locales | undefined, options?: Partial<ListFormatOptions>) {
 		// If NewTarget is undefined, throw a TypeError exception.
 		if (new.target === undefined) {
 			throw new TypeError(`Constructor Intl.ListFormat requires 'new'`);
@@ -41,16 +43,22 @@ export class ListFormat {
 		options = options === undefined ? (Object.create(null) as Partial<ListFormatOptions>) : toObject(options);
 
 		// Let opt be a new Record.
-		const opt = {} as ListFormatOptions;
+		const opt = Object.create(null) as ListFormatOptions;
+
+		// Let matcher be ? GetOption(options, "localeMatcher", "string", « "lookup", "best fit" »,  "best fit").
+		const matcher = getOption(options, "localeMatcher", "string", LOCALE_MATCHER, "best fit");
+
+		// Set opt.[[localeMatcher]] to matcher.
+		opt.localeMatcher = matcher;
 
 		// Let type be GetOption(options, "type", "string", « "conjunction", "disjunction", "unit" »,  "conjunction").
-		const type = options.type != null ? options.type : "conjunction";
+		const type = getOption(options, "type", "string", TYPE, "conjunction");
 
 		// Set listFormat.[[Type]] to type.
 		setInternalSlot(this, "type", type);
 
 		// Let style be GetOption(options, "style", "string", « "long", "short", "narrow" », "long").
-		const style = options.style != null ? options.style : "long";
+		const style = getOption(options, "style", "string", STYLE, "long");
 
 		// Set listFormat.[[Style]] to style.
 		setInternalSlot(this, "style", style);
@@ -58,19 +66,14 @@ export class ListFormat {
 		// Let localeData be %ListFormat%.[[LocaleData]].
 		const localeData = LIST_FORMAT_STATIC_INTERNALS.localeData;
 
-		// Let matcher be ? GetOption(options, "localeMatcher", "string", « "lookup", "best fit" »,  "best fit").
-		const matcher = options.localeMatcher != null ? options.localeMatcher : "best fit";
-
-		// Set opt.[[localeMatcher]] to matcher.
-		opt.localeMatcher = matcher;
-
-		// If style is "narrow" and type is not "unit", throw a RangeError exception.
-		if (style === "narrow" && type !== "unit") {
-			throw new RangeError(`Style: 'narrow' requires type: 'unit'`);
-		}
-
 		// Let r be ResolveLocale(%ListFormat%.[[AvailableLocales]], requestedLocales, opt, %ListFormat%.[[RelevantExtensionKeys]], localeData).
-		const r = resolveLocale(LIST_FORMAT_STATIC_INTERNALS.availableLocales, requestedLocales, opt, LIST_FORMAT_STATIC_INTERNALS.relevantExtensionKeys, localeData);
+		const r = resolveLocale(
+			LIST_FORMAT_STATIC_INTERNALS.availableLocales,
+			requestedLocales,
+			opt,
+			LIST_FORMAT_STATIC_INTERNALS.relevantExtensionKeys,
+			localeData
+		);
 
 		// Let dataLocale be r.[[dataLocale]].
 		const dataLocale = r.dataLocale;
@@ -106,10 +109,13 @@ export class ListFormat {
 	/**
 	 * Returns an array containing those of the provided locales that are supported without having to fall back to the runtime's default locale.
 	 * @param {Locale | Locales} locales
-	 * @param {SupportedLocalesOptions | undefined} options
 	 * @returns{Locales}
 	 */
-	public static supportedLocalesOf(locales: Locale | Locales, options?: SupportedLocalesOptions | undefined): Locales {
+	public static supportedLocalesOf(locales: Locale | Locales): Locales {
+		// The spec states that the 'length' value of supportedLocalesOf must be equal to 1,
+		// so we have to pull the options argument out of the method signature
+		const options = arguments[1] as SupportedLocalesOptions | undefined;
+
 		// Let availableLocales be %ListFormat%.[[AvailableLocales]].
 		const availableLocales = LIST_FORMAT_STATIC_INTERNALS.availableLocales;
 
@@ -210,13 +216,25 @@ export class ListFormat {
 		}
 
 		const locale = getInternalSlot(this, "locale");
-		const style = getInternalSlot(this, "style");
 		const type = getInternalSlot(this, "type");
+		const style = getInternalSlot(this, "style");
 
 		return {
 			locale,
-			style,
-			type
+			type,
+			style
 		};
 	}
 }
+
+/**
+ * The initial value of the @@toStringTag property is the string value "Intl.ListFormat".
+ * This property has the attributes { [[Writable]]: false, [[Enumerable]]: false, [[Configurable]]: true }.
+ * @type {string}
+ */
+Object.defineProperty(ListFormat.prototype, Symbol.toStringTag, {
+	writable: false,
+	enumerable: false,
+	value: "Intl.ListFormat",
+	configurable: true
+});

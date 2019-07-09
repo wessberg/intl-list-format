@@ -38,10 +38,14 @@ export const LIST_FORMAT_STATIC_INTERNALS: ListFormatStaticInternals = {
  * @param {T} property
  * @param {ListFormatInstanceInternals[T]} value
  */
-export function setInternalSlot<T extends keyof ListFormatInstanceInternals>(instance: ListFormat, property: T, value: ListFormatInstanceInternals[T]): void {
+export function setInternalSlot<T extends keyof ListFormatInstanceInternals>(
+	instance: ListFormat,
+	property: T,
+	value: ListFormatInstanceInternals[T]
+): void {
 	let record = LIST_FORMAT_INSTANCE_INTERNAL_MAP.get(instance);
 	if (record == null) {
-		record = {} as ListFormatInstanceInternals;
+		record = Object.create(null) as ListFormatInstanceInternals;
 		LIST_FORMAT_INSTANCE_INTERNAL_MAP.set(instance, record);
 	}
 

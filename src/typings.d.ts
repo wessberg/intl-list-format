@@ -37,11 +37,9 @@ declare namespace Intl {
 	type ListPartitions = ReadonlyArray<ListPartition>;
 
 	class ListFormat {
-		public [Symbol.toStringTag] = "Intl.ListFormat";
-
 		constructor(locales?: Locale | Locales | undefined, options?: Partial<ListFormatOptions>);
 
-		public static supportedLocalesOf(locales: Locale | Locales, options?: SupportedLocalesOptions | undefined): Locales;
+		public static supportedLocalesOf(locales: Locale | Locales, options?: Intl.SupportedLocalesOptions | undefined): Locales;
 
 		public format(list?: Iterable<string>): string;
 

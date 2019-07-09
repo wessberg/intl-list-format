@@ -39,7 +39,7 @@ export function resolveLocale(
 	let foundLocale = r.locale;
 
 	// Let result be a new Record.
-	const result = {} as ResolveLocaleResult;
+	const result = Object.create(null) as ResolveLocaleResult;
 
 	// Set result.[[dataLocale]] to foundLocale.
 	result.dataLocale = foundLocale;

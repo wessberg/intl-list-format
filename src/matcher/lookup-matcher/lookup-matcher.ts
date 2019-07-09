@@ -14,7 +14,7 @@ import {ensureDefaultLocale} from "../../default-locale/get-default-locale";
  */
 export function lookupMatcher({availableLocales, requestedLocales}: MatcherOptions): MatcherResult {
 	// Let result be a new Record.
-	const result = {} as MatcherResult;
+	const result = Object.create(null) as MatcherResult;
 	// For each element locale of requestedLocales in List order, do
 	for (const locale of requestedLocales) {
 		// Let noExtensionsLocale be the String value that is locale with all Unicode locale extension sequences removed.
